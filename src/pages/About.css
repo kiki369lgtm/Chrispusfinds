@@ -1,0 +1,90 @@
+.about-page{
+    width:100%;
+    
+}
+
+.about-hero{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:60px;
+    padding:80px 10%;
+    background:#f8f8f8;
+    flex-wrap:wrap;
+}
+
+.about-hero img{
+    width:450px;
+    max-width:100%;
+    border-radius:15px;
+}
+
+.hero-text{
+    max-width:500px;
+}
+
+.hero-text h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    font-size:1.2rem;
+    color:#555;
+}
+
+.about-section{
+    padding:70px 10%;
+}
+
+.about-section h2{
+    color:#d89b12;
+    margin-bottom:8px;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.feature-card{
+    background:#d89b12;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-5px);
+}
+
+.values{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    list-style:none;
+    padding:0;
+}
+
+.about-cta{
+    text-align:center;
+    background:#16314a;
+    color:white;
+    padding:80px 20px;
+}
+
+.about-cta button{
+    margin-top:20px;
+    padding:15px 35px;
+    background:#d89b12;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.about-cta button:hover{
+    background:#b98109;
+}

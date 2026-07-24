@@ -1,0 +1,218 @@
+/* ─── Product Card Container ─── */
+.product-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* ─── Wishlist Button ─── */
+.wishlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #9ca3af;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  transition: all 0.2s ease;
+}
+
+.wishlist-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.wishlist-btn.liked {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+/* ─── Product Image ─── */
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* ─── Hover Overlay ─── */
+.product-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  display: flex;
+  gap: 8px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.product-overlay.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  z-index: 15;
+}
+
+.add-cart-btn {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.add-cart-btn:hover {
+  background: #b91c1c;
+}
+
+.view-detail-btn {
+  background: #ffffff;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+}
+
+.view-detail-btn:hover {
+  background: #fef2f2;
+}
+
+/* ─── Product Info ─── */
+.product-info {
+  padding: 16px;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  min-height: 40px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.product-name:hover {
+  color: #dc2626;
+}
+
+/* ─── Rating ─── */
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.star-filled {
+  color: #fbbf24;
+  font-size: 12px;
+}
+
+.star-empty {
+  color: #d1d5db;
+  font-size: 12px;
+}
+
+.rating-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+/* ─── Product Pricing ─── */
+.product-pricing {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.price-row:last-child {
+  margin-bottom: 0;
+}
+
+.price-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.price-value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.price-value.cash {
+  color: #dc2626;
+  font-size: 16px;
+}
+
+.price-value.deposit {
+  color: #2563eb;
+}
+
+.price-value.monthly {
+  color: #059669;
+}
+
+.installment-terms {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-left: 4px;
+}
