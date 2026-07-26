@@ -1,7 +1,23 @@
 import ProductCard from "../ProductCard/ProductCard";
 import "./ProductGrid.css";
 
-const ProductGrid = ({ products, title }) => {
+const ProductGrid = ({ products, title, loading, error }) => {
+  if (loading) {
+    return (
+      <div className="product-grid-empty">
+        <p>Loading products...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="product-grid-empty">
+        <p>Failed to load products: {error}</p>
+      </div>
+    );
+  }
+
   if (products.length === 0) {
     return (
       <div className="product-grid-empty">

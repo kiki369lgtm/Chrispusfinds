@@ -1,19 +1,30 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { FaHeart, FaStar, FaShoppingCart, FaCheck, FaTruck, FaShieldAlt, FaUndo } from "react-icons/fa";
-import { getProductById, formatPrice } from "../../data/products";
+import { formatPrice } from "../../utils/formatPrice";
+import { useProduct } from "../../hooks/useProduct";
 import { useCart } from "../../context/CartContext";
 import "./ProductDetail.css";
 
+const DAYS_PER_MONTH = 30;
+
 const ProductDetail = () => {
   const { id } = useParams();
-  const product = getProductById(Number(id));
+  const { product, loading, error } = useProduct(id);
   const { addToCart } = useCart();
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="product-not-found">
+        <h1>Loading product...</h1>
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="product-not-found">
         <h1>Product Not Found</h1>
@@ -22,7 +33,10 @@ const ProductDetail = () => {
     );
   }
 
-  const totalInstallment = product.deposit + (product.monthlyInstallment * product.installmentMonths);
+  const cashPrice = Number(product.cash_price);
+  const deposit = Number(product.deposit);
+  const dailyInstallment = Number(product.daily_installment);
+  const totalInstallment = deposit + dailyInstallment * product.installment_months * DAYS_PER_MONTH;
 
   return (
     <div className="product-detail-page">
@@ -40,9 +54,9 @@ const ProductDetail = () => {
           
           <div className="detail-rating">
             {[...Array(5)].map((_, i) => (
-              <FaStar key={i} className={i < Math.floor(product.rating) ? "star-filled" : "star-empty"} />
+              <FaStar key={i} className={i < Math.floor(product.rating ?? 0) ? "star-filled" : "star-empty"} />
             ))}
-            <span>{product.rating} ({product.reviews} reviews)</span>
+            <span>{product.rating ?? "N/A"} ({product.reviews ?? 0} reviews)</span>
           </div>
 
           <p className="detail-short-desc">{product.description}</p>
@@ -50,14 +64,14 @@ const ProductDetail = () => {
           {/* Pricing Section */}
           <div className="detail-pricing">
             <h3>Choose Your Payment Plan</h3>
-            
+
             <div className="pricing-option cash-option">
               <div className="option-header">
                 <FaCheck className="check-icon" />
                 <span className="option-name">Cash Price</span>
               </div>
-              <span className="option-price">{formatPrice(product.cashPrice)}</span>
-              <span className="option-save">Save {formatPrice(totalInstallment - product.cashPrice)}</span>
+              <span className="option-price">{formatPrice(cashPrice)}</span>
+              <span className="option-save">Save {formatPrice(totalInstallment - cashPrice)}</span>
             </div>
 
             <div className="pricing-option installment-option">
@@ -67,15 +81,15 @@ const ProductDetail = () => {
               <div className="installment-breakdown">
                 <div className="breakdown-row">
                   <span>Deposit:</span>
-                  <span>{formatPrice(product.deposit)}</span>
+                  <span>{formatPrice(deposit)}</span>
                 </div>
                 <div className="breakdown-row">
-                  <span>Monthly:</span>
-                  <span>{formatPrice(product.monthlyInstallment)}</span>
+                  <span>Daily:</span>
+                  <span>{formatPrice(dailyInstallment)}</span>
                 </div>
                 <div className="breakdown-row">
                   <span>Duration:</span>
-                  <span>{product.installmentMonths} months</span>
+                  <span>{product.installment_months} months</span>
                 </div>
                 <div className="breakdown-row total">
                   <span>Total:</span>
@@ -86,11 +100,11 @@ const ProductDetail = () => {
           </div>
 
           {/* Color Selection */}
-          {product.fullDetails?.colors && (
+          {product.full_details?.colors && (
             <div className="color-selection">
               <label>Color:</label>
               <div className="color-options">
-                {product.fullDetails.colors.map((color, index) => (
+                {product.full_details.colors.map((color, index) => (
                   <button
                     key={color}
                     className={`color-btn ${selectedColor === index ? "active" : ""}`}
@@ -132,7 +146,7 @@ const ProductDetail = () => {
             </div>
             <div className="badge">
               <FaShieldAlt />
-              <span>{product.fullDetails?.warranty || "1 Year Warranty"}</span>
+              <span>{product.full_details?.warranty || "1 Year Warranty"}</span>
             </div>
             <div className="badge">
               <FaUndo />
@@ -175,11 +189,11 @@ const ProductDetail = () => {
             </div>
           )}
 
-          {activeTab === "specifications" && product.fullDetails && (
+          {activeTab === "specifications" && product.full_details && (
             <div className="tab-panel">
               <table className="specs-table">
                 <tbody>
-                  {Object.entries(product.fullDetails).map(([key, value]) => (
+                  {Object.entries(product.full_details).map(([key, value]) => (
                     Array.isArray(value) ? (
                       <tr key={key}>
                         <td>{key.charAt(0).toUpperCase() + key.slice(1)}</td>

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import ProductGrid from "../components/ProductGrid/ProductGrid";
-import { getProductsBySubcategory } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 
 const formatLabel = (slug) =>
   slug
@@ -10,7 +10,7 @@ const formatLabel = (slug) =>
 
 const SubcategoryPage = () => {
   const { category, subcategory } = useParams();
-  const products = getProductsBySubcategory(category, subcategory);
+  const { products, loading, error } = useProducts({ category, subcategory });
 
   return (
     <div className="category-page">
@@ -18,7 +18,7 @@ const SubcategoryPage = () => {
         <h1>{formatLabel(subcategory)}</h1>
         <p>{formatLabel(category)}</p>
       </div>
-      <ProductGrid products={products} title={formatLabel(subcategory)} />
+      <ProductGrid products={products} title={formatLabel(subcategory)} loading={loading} error={error} />
     </div>
   );
 };

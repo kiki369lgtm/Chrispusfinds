@@ -1,8 +1,8 @@
 import ProductGrid from "../components/ProductGrid/ProductGrid";
-import { getProductsByCategory } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 
 const Smartphones = () => {
-  const products = getProductsByCategory("smartphones");
+  const { products, loading, error } = useProducts({ category: "Mobile Phones" });
 
   return (
     <div className="category-page">
@@ -10,7 +10,7 @@ const Smartphones = () => {
         <h1>Smartphones</h1>
         <p>Discover the latest smartphones from top brands</p>
       </div>
-      <ProductGrid products={products} title="Phones" />
+      <ProductGrid products={products} title="Phones" loading={loading} error={error} />
     </div>
   );
 };

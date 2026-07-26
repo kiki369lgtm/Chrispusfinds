@@ -1,12 +1,12 @@
 import { useCart } from "../context/CartContext";
-import { formatPrice } from "../data/products";
+import { formatPrice } from "../utils/formatPrice";
 import "./CartDropdown.css";
 
 const CartDropdown = () => {
   const { cartItems } = useCart();
 
   const total = cartItems.reduce(
-    (sum, item) => sum + item.cashPrice * item.quantity,
+    (sum, item) => sum + Number(item.cash_price) * item.quantity,
     0
   );
 
@@ -32,7 +32,7 @@ const CartDropdown = () => {
                   <span className="cart-item-qty">Qty: {item.quantity}</span>
                 </div>
                 <span className="cart-item-price">
-                  {formatPrice(item.cashPrice * item.quantity)}
+                  {formatPrice(Number(item.cash_price) * item.quantity)}
                 </span>
               </li>
             ))}

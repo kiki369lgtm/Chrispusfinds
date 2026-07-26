@@ -1,15 +1,15 @@
 import ProductGrid from "../components/ProductGrid/ProductGrid";
-import { getProductsByCategory } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 
 const Chargers = () => {
-  const products = getProductsByCategory("chargers");
+  const { products, loading, error } = useProducts({ category: "Chargers" });
 
   return (
     <div className="category-page">
       <div className="category-header">
         <h1>Chargers</h1>
       </div>
-      <ProductGrid products={products} title="Chargers" />
+      <ProductGrid products={products} title="Chargers" loading={loading} error={error} />
     </div>
   );
 };

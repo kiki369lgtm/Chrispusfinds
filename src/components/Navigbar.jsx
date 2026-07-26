@@ -1,23 +1,33 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import "./Navigbar.css";
 import logo from "../assets/Rehoboth.jpg";
-import SearchBar from "./Searchbar";        // Note: your file is "Searchbar.jsx" not "SearchBar.jsx"
-import LoginModal from "./LoginModal";
+import SearchBar from "./SearchBar";
 import MegaMenu from "./MegaMenu";
 import CartDropdown from "./CartDropdown";
 import useClickOutside from "./userClickOutside";  // Flat structure — same folder
 import { useCart } from "../context/CartContext";
-function Navigbar({ onSearch }) {
-  const [showLogin, setShowLogin] = useState(false);
+import { useAuth } from "../hooks/useAuth";
+function Navigbar() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const navRef = useRef(null);
   const cartRef = useRef(null);
   const { cartCount } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   useClickOutside(navRef, () => setActiveMenu(null));
   useClickOutside(cartRef, () => setShowCart(false));
+
+  const goToAccount = () => navigate(user ? "/account" : "/login");
+
+  const handleSearch = ({ query, category }) => {
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    if (category) params.set("category", category);
+    navigate(`/search?${params.toString()}`);
+  };
 
   return (
     <header className="navbar-header" ref={navRef}>
@@ -31,7 +41,7 @@ function Navigbar({ onSearch }) {
 
           {/* Center - Search */}
           <div className="navbar-center">
-            <SearchBar onSearch={onSearch} />
+            <SearchBar onSearch={handleSearch} />
           </div>
 
           {/* Right - Icons */}
@@ -50,15 +60,15 @@ function Navigbar({ onSearch }) {
               </button>
               {showCart && <CartDropdown />}
             </div>
-            <button 
-              className="action-btn" 
+            <button
+              className="action-btn"
               aria-label="Account"
-              onClick={() => setShowLogin(true)}
+              onClick={goToAccount}
             >
               <FaUser />
             </button>
-            <span className="login-text" onClick={() => setShowLogin(true)}>
-              Log in
+            <span className="login-text" onClick={goToAccount}>
+              {user ? user.first_name : "Log in"}
             </span>
           </div>
         </div>
@@ -74,8 +84,6 @@ function Navigbar({ onSearch }) {
           />
         </div>
       </div>
-
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
     </header>
   );
 }

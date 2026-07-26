@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaStar, FaShoppingCart, FaEye } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
-import { formatPrice } from "../../data/products";
+import { formatPrice } from "../../utils/formatPrice";
 import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
@@ -79,26 +79,26 @@ const ProductCard = ({ product }) => {
           {[...Array(5)].map((_, i) => (
             <FaStar
               key={i}
-              className={i < Math.floor(product.rating) ? "star-filled" : "star-empty"}
+              className={i < Math.floor(product.rating ?? 0) ? "star-filled" : "star-empty"}
             />
           ))}
-          <span className="rating-text">({product.rating})</span>
+          <span className="rating-text">({product.rating ?? "N/A"})</span>
         </div>
 
         {/* Three Pricing Options */}
         <div className="product-pricing">
           <div className="price-row">
             <span className="price-label">Cash Price:</span>
-            <span className="price-value cash">{formatPrice(product.cashPrice)}</span>
+            <span className="price-value cash">{formatPrice(product.cash_price)}</span>
           </div>
           <div className="price-row">
             <span className="price-label">Deposit:</span>
             <span className="price-value deposit">{formatPrice(product.deposit)}</span>
           </div>
           <div className="price-row">
-            <span className="price-label">Monthly:</span>
-            <span className="price-value monthly">{formatPrice(product.monthlyInstallment)}</span>
-            <span className="installment-terms">x {product.installmentMonths} months</span>
+            <span className="price-label">Daily:</span>
+            <span className="price-value monthly">{formatPrice(product.daily_installment)}</span>
+            <span className="installment-terms">x {product.installment_months} months</span>
           </div>
         </div>
       </div>
