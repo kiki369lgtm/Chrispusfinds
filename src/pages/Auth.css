@@ -193,8 +193,26 @@
     color: #15803d;
 }
 
+@media (max-width: 576px) {
+    .auth-page {
+        padding: 24px 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .auth-card {
+        padding: 28px 20px;
+    }
+
+    .auth-form-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
 .account-profile-picture {
-    width: 72px;
+    width: 100%;
+    max-width: 72px;
     height: 72px;
     border-radius: 50%;
     object-fit: cover;

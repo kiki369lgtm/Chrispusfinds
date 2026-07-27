@@ -164,13 +164,13 @@
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 1024px) {
+@media (max-width: 992px) {
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 576px) {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -181,5 +181,11 @@
     flex-direction: column;
     gap: 12px;
     text-align: center;
+  }
+
+  .footer-bottom-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 20px;
   }
 }

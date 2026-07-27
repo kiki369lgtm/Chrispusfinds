@@ -1,6 +1,9 @@
 /* ─── Product Card Container ─── */
 .product-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -127,6 +130,9 @@
 
 /* ─── Product Info ─── */
 .product-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: 16px;
 }
 
@@ -137,6 +143,7 @@
   margin: 0 0 8px 0;
   line-height: 1.4;
   min-height: 40px;
+  overflow-wrap: break-word;
   cursor: pointer;
   transition: color 0.2s;
 }
@@ -171,7 +178,7 @@
 
 /* ─── Product Pricing ─── */
 .product-pricing {
-  margin-top: 12px;
+  margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid #f3f4f6;
 }

@@ -9,6 +9,7 @@
 
 .product-grid-section {
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 40px 24px;
 }
@@ -26,11 +27,11 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  color:aqua;
+  align-items: stretch;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* Responsive: 4 desktop -> 3 medium -> 2 tablet/phone -> 1 very small */
+@media (max-width: 1200px) {
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -43,7 +44,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 400px) {
   .product-grid {
     grid-template-columns: 1fr;
   }

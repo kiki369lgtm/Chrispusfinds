@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaHeart, FaShoppingCart, FaUser, FaBars, FaTimes } from "react-icons/fa";
 import "./Navigbar.css";
 import logo from "../assets/Rehoboth.jpg";
 import SearchBar from "./SearchBar";
@@ -12,6 +12,7 @@ import { useAuth } from "../hooks/useAuth";
 function Navigbar() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [showCart, setShowCart] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef(null);
   const cartRef = useRef(null);
   const { cartCount } = useCart();
@@ -70,11 +71,19 @@ function Navigbar() {
             <span className="login-text" onClick={goToAccount}>
               {user ? user.first_name : "Log in"}
             </span>
+            <button
+              className="hamburger-btn"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            >
+              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar - Mega Menu */}
+      {/* Bottom Bar - Mega Menu (desktop) */}
       <div className="navbar-bottom">
         <div className="navbar-container">
           <MegaMenu
@@ -84,6 +93,34 @@ function Navigbar() {
           />
         </div>
       </div>
+
+      {/* Mobile slide-out menu */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
+          <div
+            className="mobile-menu-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mobile-menu-header">
+              <span>Menu</span>
+              <button
+                className="mobile-menu-close"
+                aria-label="Close menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <FaTimes />
+              </button>
+            </div>
+            <div onClick={() => setIsMobileMenuOpen(false)}>
+              <MegaMenu
+                activeMenu={activeMenu}
+                onHover={setActiveMenu}
+                onLeave={() => setActiveMenu(null)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -21,15 +21,16 @@
 
 .hero-text{
     max-width:500px;
+    min-width:0;
 }
 
 .hero-text h1{
-    font-size:3rem;
+    font-size:clamp(1.75rem, 5vw, 3rem);
     margin-bottom:20px;
 }
 
 .hero-text p{
-    font-size:1.2rem;
+    font-size:clamp(1rem, 2vw, 1.2rem);
     color:#555;
 }
 
@@ -87,4 +88,40 @@
 
 .about-cta button:hover{
     background:#b98109;
+}
+
+@media (max-width: 992px){
+    .about-hero{
+        padding:60px 8%;
+        gap:40px;
+    }
+}
+
+@media (max-width: 768px){
+    .about-hero{
+        padding:50px 6%;
+        gap:30px;
+    }
+
+    .about-section{
+        padding:40px 6%;
+    }
+
+    .values{
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width: 576px){
+    .about-hero img{
+        width:100%;
+    }
+
+    .about-cta{
+        padding:50px 20px;
+    }
+
+    .about-cta button{
+        width:100%;
+    }
 }

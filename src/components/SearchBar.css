@@ -98,6 +98,7 @@
 
 .category-label {
   max-width: 140px;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -118,6 +119,7 @@
   top: calc(100% + 8px);
   right: 0;
   min-width: 200px;
+  max-width: calc(100vw - 16px);
   background: #fff;
   border: 1px solid var(--search-border);
   border-radius: 12px;
@@ -169,6 +171,7 @@
   top: calc(100% + 12px);
   left: -24px;
   right: -4px;
+  max-width: calc(100vw - 16px);
   background: #fff;
   border: 1px solid var(--search-border);
   border-radius: 16px;
@@ -216,7 +219,8 @@
 }
 
 .suggestion-thumb {
-  width: 40px;
+  width: 100%;
+  max-width: 40px;
   height: 40px;
   object-fit: cover;
   border-radius: 8px;
@@ -262,7 +266,8 @@
 
 /* ─── Search Button ─── */
 .search-button {
-  width: 48px;
+  width: 100%;
+  max-width: 48px;
   height: 48px;
   margin: 4px;
   border-radius: 50%;
@@ -289,7 +294,7 @@
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 640px) {
+@media (max-width: 576px) {
   .search-bar {
     --search-height: 48px;
   }
@@ -307,8 +312,25 @@
   }
 
   .search-button {
-    width: 40px;
+    width: 100%;
+    max-width: 40px;
     height: 40px;
     font-size: 16px;
+  }
+
+  .search-suggestions {
+    left: 0;
+    right: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .search-input-wrapper {
+    padding-left: 12px;
+  }
+
+  .suggestion-meta {
+    display: none;
   }
 }

@@ -3,6 +3,7 @@
   top: calc(100% + 12px);
   right: 0;
   width: 320px;
+  max-width: calc(100vw - 24px);
   max-height: 400px;
   overflow-y: auto;
   background: #fff;

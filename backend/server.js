@@ -11,8 +11,18 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 
+// Trailing slashes break CORS's exact-origin match (browsers never send one
+// in the Origin header), so strip them defensively rather than trusting the
+// env var to be typed correctly.
+const stripTrailingSlash = (url) => url?.replace(/\/+$/, '');
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    stripTrailingSlash(process.env.FRONTEND_URL),
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
