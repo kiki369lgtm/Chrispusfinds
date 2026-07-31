@@ -58,3 +58,14 @@ export const deleteProduct = async (id) => {
     if (!res.ok) throw new Error('Failed to delete product');
     return true;
 };
+
+export const uploadImages = async (files) => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('images', file));
+    
+    const res = await fetch(`${API_URL}/products/upload`, {
+        method: 'POST',
+        body: formData
+    });
+    return res.json();
+};

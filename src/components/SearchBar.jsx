@@ -109,12 +109,9 @@ const SearchBar = ({ onSearch, categories = [] }) => {
                       onMouseEnter={() => setActiveIndex(index)}
                     >
                       <img
-                        src={product.image}
+                        src={product.image_url}
                         alt={product.name}
                         className="suggestion-thumb"
-                        onError={(e) => {
-                          e.target.src = "/images/placeholder.jpg";
-                        }}
                       />
                       <div className="suggestion-info">
                         <span className="suggestion-name">

@@ -4,42 +4,48 @@ const Product = {
     async create(data) {
         const {
             name, category, subcategory, cash_price, deposit,
-            daily_installment, installment_months, image, images,
-            description, full_details
+            weekly_installment, image_urls, description,
+            full_details, cloudinary_public_id
         } = data;
-
+        
         const query = `
             INSERT INTO products (
                 name, category, subcategory, cash_price, deposit,
-                daily_installment, installment_months, image, images,
-                description, full_details
+                weekly_installment, image_urls, description,
+                full_details, cloudinary_public_id
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *;
         `;
         const values = [
             name, category, subcategory, cash_price, deposit,
-            daily_installment, installment_months, image,
-            JSON.stringify(images || []), description,
-            JSON.stringify(full_details || {})
+            weekly_installment,
+            Array.isArray(image_urls) ? image_urls : [],
+            description,
+            typeof full_details === 'string' ? full_details : JSON.stringify(full_details || {}),
+            cloudinary_public_id
         ];
         const { rows } = await pool.query(query, values);
         return rows[0];
     },
 
     async findAll(filters = {}) {
-        const { category, subcategory, search, limit = 50, offset = 0 } = filters;
-        let query = `SELECT * FROM products WHERE is_active = true`;
+        const { category, subcategory, search, brand, limit = 50, offset = 0 } = filters;
+        let query = `SELECT *, image_urls[1] AS image_url FROM products WHERE is_active = true`;
         const values = [];
         let count = 0;
 
         if (category) {
-            query += ` AND category ILIKE $${++count}`;
+            query += ` AND category = $${++count}`;
             values.push(category);
         }
         if (subcategory) {
-            query += ` AND subcategory ILIKE $${++count}`;
+            query += ` AND subcategory = $${++count}`;
             values.push(subcategory);
+        }
+        if (brand) {
+            query += ` AND subcategory = $${++count}`;
+            values.push(brand);
         }
         if (search) {
             query += ` AND (name ILIKE $${++count} OR description ILIKE $${count})`;
@@ -54,7 +60,7 @@ const Product = {
     },
 
     async findById(id) {
-        const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+        const { rows } = await pool.query('SELECT *, image_urls[1] AS image_url FROM products WHERE id = $1', [id]);
         return rows[0] || null;
     },
 
@@ -66,11 +72,13 @@ const Product = {
         for (const [key, value] of Object.entries(updates)) {
             if (value !== undefined && key !== 'id') {
                 fields.push(`${key} = $${++count}`);
-                values.push(
-                    (key === 'images' || key === 'full_details') && typeof value !== 'string' 
-                        ? JSON.stringify(value) 
-                        : value
-                );
+                if (key === 'image_urls' && Array.isArray(value)) {
+                    values.push(value);
+                } else if (key === 'full_details' && typeof value !== 'string') {
+                    values.push(JSON.stringify(value));
+                } else {
+                    values.push(value);
+                }
             }
         }
 
@@ -92,7 +100,8 @@ const Product = {
         const sql = `
             WITH scored AS (
                 SELECT
-                    id, name, category, subcategory, cash_price, image,
+                    id, name, category, subcategory, cash_price,
+                    image_urls, cloudinary_public_id, image_urls[1] AS image_url,
                     CASE
                         WHEN name ILIKE $1 THEN 0
                         WHEN name ILIKE $1 || '%' THEN 1
@@ -112,7 +121,7 @@ const Product = {
                 FROM products
                 WHERE is_active = true
             )
-            SELECT id, name, category, subcategory, cash_price, image, rank_tier, sim_score
+            SELECT id, name, category, subcategory, cash_price, image_urls, cloudinary_public_id, image_url, rank_tier, sim_score
             FROM scored
             WHERE rank_tier < 3 OR sim_score > 0.3
             ORDER BY rank_tier ASC, sim_score DESC, name ASC
