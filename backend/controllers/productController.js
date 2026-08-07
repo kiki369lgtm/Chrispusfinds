@@ -29,20 +29,6 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-exports.suggestProducts = async (req, res) => {
-    try {
-        const { q, limit } = req.query;
-        if (!q || !q.trim()) {
-            return res.json({ success: true, count: 0, data: [] });
-        }
-        const suggestions = await Product.suggest(q.trim(), limit ? parseInt(limit) : 8);
-        res.json({ success: true, count: suggestions.length, data: suggestions });
-    } catch (error) {
-        console.error('Suggest products error:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-};
-
 exports.getProductById = async (req, res) => {
     try {
         const product = await Product.findById(req.validatedId);

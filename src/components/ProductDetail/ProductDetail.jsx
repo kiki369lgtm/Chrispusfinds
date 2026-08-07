@@ -44,7 +44,7 @@ const ProductDetail = () => {
         {/* Left: Image Gallery */}
         <div className="detail-gallery">
           <div className="main-image-wrapper">
-            <img src={product.image_url} alt={product.name} className="main-image" />
+            <img src={product.image} alt={product.name} className="main-image" />
           </div>
         </div>
 

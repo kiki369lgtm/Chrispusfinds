@@ -20,9 +20,12 @@ const CartDropdown = () => {
             {cartItems.map((item) => (
               <li key={item.id} className="cart-item">
                 <img
-                  src={item.image_url}
+                  src={item.image}
                   alt={item.name}
                   className="cart-item-image"
+                  onError={(e) => {
+                    e.target.src = "/images/placeholder.jpg";
+                  }}
                 />
                 <div className="cart-item-info">
                   <span className="cart-item-name">{item.name}</span>

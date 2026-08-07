@@ -40,9 +40,12 @@ const ProductCard = ({ product }) => {
       {/* Product Image - clickable to view detail */}
       <div className="product-image-wrapper" onClick={handleViewDetail}>
         <img
-          src={product.image_url}
+          src={product.image}
           alt={product.name}
           className="product-image"
+          onError={(e) => {
+            e.target.src = "/images/placeholder.jpg";
+          }}
         />
         
         {/* Hover Overlay with Actions */}
