@@ -5,14 +5,14 @@ const Product = {
         const {
             name, category, subcategory, cash_price, deposit,
             weekly_installment, image_urls, description,
-            full_details, cloudinary_public_id
+            full_details, cloudinary_public_ids
         } = data;
-        
+
         const query = `
             INSERT INTO products (
                 name, category, subcategory, cash_price, deposit,
                 weekly_installment, image_urls, description,
-                full_details, cloudinary_public_id
+                full_details, cloudinary_public_ids
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *;
@@ -23,7 +23,7 @@ const Product = {
             Array.isArray(image_urls) ? image_urls : [],
             description,
             typeof full_details === 'string' ? full_details : JSON.stringify(full_details || {}),
-            cloudinary_public_id
+            Array.isArray(cloudinary_public_ids) ? cloudinary_public_ids : []
         ];
         const { rows } = await pool.query(query, values);
         return rows[0];
@@ -101,7 +101,7 @@ const Product = {
             WITH scored AS (
                 SELECT
                     id, name, category, subcategory, cash_price,
-                    image_urls, cloudinary_public_id, image_urls[1] AS image_url,
+                    image_urls, cloudinary_public_ids, image_urls[1] AS image_url,
                     CASE
                         WHEN name ILIKE $1 THEN 0
                         WHEN name ILIKE $1 || '%' THEN 1
@@ -121,7 +121,7 @@ const Product = {
                 FROM products
                 WHERE is_active = true
             )
-            SELECT id, name, category, subcategory, cash_price, image_urls, cloudinary_public_id, image_url, rank_tier, sim_score
+            SELECT id, name, category, subcategory, cash_price, image_urls, cloudinary_public_ids, image_url, rank_tier, sim_score
             FROM scored
             WHERE rank_tier < 3 OR sim_score > 0.3
             ORDER BY rank_tier ASC, sim_score DESC, name ASC

@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/productController');
 const { validateProduct, validateId } = require('../middleware/validateProduct');
-const express = require("express");
-const upload = require("../middleware/upload");
+const upload = require('../middleware/upload');
 
 router.post('/', validateProduct, controller.createProduct);
 router.post('/upload', upload.array('images', 5), controller.uploadProductImages);
