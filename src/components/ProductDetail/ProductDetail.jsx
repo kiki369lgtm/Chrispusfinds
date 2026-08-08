@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
-import { FaHeart, FaStar, FaShoppingCart, FaCheck, FaTruck, FaShieldAlt, FaUndo } from "react-icons/fa";
+import { FaHeart, FaStar, FaShoppingCart, FaCheck, FaTruck, FaShieldAlt, FaUndo, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { formatPrice } from "../../utils/formatPrice";
 import { useProduct } from "../../hooks/useProduct";
 import { useCart } from "../../context/CartContext";
@@ -15,6 +15,7 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const [currentImage, setCurrentImage] = useState(0);
 
   if (loading) {
     return (
@@ -33,6 +34,17 @@ const ProductDetail = () => {
     );
   }
 
+  const images = product.image_urls?.length ? product.image_urls : [];
+  const hasMultipleImages = images.length > 1;
+
+  const showPrevImage = () => {
+    setCurrentImage((i) => (i - 1 + images.length) % images.length);
+  };
+
+  const showNextImage = () => {
+    setCurrentImage((i) => (i + 1) % images.length);
+  };
+
   const cashPrice = Number(product.cash_price);
   const deposit = Number(product.deposit);
   const dailyInstallment = Number(product.daily_installment);
@@ -44,7 +56,46 @@ const ProductDetail = () => {
         {/* Left: Image Gallery */}
         <div className="detail-gallery">
           <div className="main-image-wrapper">
-            <img src={product.image} alt={product.name} className="main-image" />
+            <img
+              src={images[currentImage] || "/images/placeholder.jpg"}
+              alt={product.name}
+              className="main-image"
+              onError={(e) => {
+                e.target.src = "/images/placeholder.jpg";
+              }}
+            />
+
+            {hasMultipleImages && (
+              <>
+                <button
+                  type="button"
+                  className="image-nav-btn image-nav-prev"
+                  onClick={showPrevImage}
+                  aria-label="Previous image"
+                >
+                  <FaChevronLeft />
+                </button>
+                <button
+                  type="button"
+                  className="image-nav-btn image-nav-next"
+                  onClick={showNextImage}
+                  aria-label="Next image"
+                >
+                  <FaChevronRight />
+                </button>
+                <div className="image-dots">
+                  {images.map((url, index) => (
+                    <button
+                      key={url}
+                      type="button"
+                      className={`image-dot ${index === currentImage ? "active" : ""}`}
+                      onClick={() => setCurrentImage(index)}
+                      aria-label={`Show image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
